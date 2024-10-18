@@ -22,7 +22,7 @@ export default function File(props) {
 
     async function downloadFIle() {
         await Eitri.fs.download({
-            url: "blob:https://dash.cloudflare.com/18acfd9e-2964-4e62-9d7d-f1f9860891e7",
+            url: "https://pdfcoffee.com/39fabd35-6649-436e-9083-e2baab123ccc",
             fileName: "guiadomochileiro.pdf",
         })
     }

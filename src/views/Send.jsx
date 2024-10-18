@@ -2,12 +2,17 @@ import { useState } from "react";
 import Eitri from "eitri-bifrost";
 import sendIcon from "../assets/images/send.svg";
 import { Files } from "../enums/Files";
+import qrCodeImage from "../assets/images/files/qrcode.png";
 
 export default function Send() {
     const [isUploading, setIsUploading] = useState(false);
     const [isReady, setIsReady] = useState(false);
     const [file, setFile] = useState(null);
     const [progress, setProgress] = useState(0);
+
+    const [showModal, setShowModal] = useState(false);
+    const openModal = () => setShowModal(true);
+    const closeModal = () => setShowModal(false);
 
     async function handleSelectFile() {
         let selectedFile = await Eitri.fs.openFilePicker({
@@ -41,6 +46,16 @@ export default function Send() {
     return (
         <Window bottomInset customColor="#0d0d0d" statusBarTextColor="white">
             <View marginTop="jumbo" padding="small"> 
+                <Modal
+                    show={showModal}
+                    title={closeModal}
+                >
+                    <View alignItems="center" justifyContent="center">
+                        <Image width={200} height={200} src={qrCodeImage} box textAlign="center" />
+                        <Button block size="micro" width="100" label='OK' onPress={closeModal} marginTop="small"></Button>
+                    </View>
+                </Modal>
+
                 <View height="10em" borderStyle="dashed" borderWidth="hairline" borderRadius="small" borderColor="neutral-100" direction="column" alignItems="center" justifyContent="center">
                     {isUploading ? (
                         <>
@@ -53,6 +68,7 @@ export default function Send() {
                     ) : isReady ? (
                         <View marginTop="small" direction="column" alignItems="center" justifyContent="center">
                             <Text color="neutral-100">{`Código do arquivo: ${Files[file.fileName]}`}</Text>
+                            <Button block size="micro" marginTop="small" label="QRcode" onPress={openModal} />
                             <Button block size="micro" variant="ghost" marginTop="small" label="Continue" onPress={() => {
                                 setIsReady(false);
                             }} />
